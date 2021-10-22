@@ -7,20 +7,33 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   String mesaj = "Student Tracking System";
+
+  Student selectedStudent = Student.withId(0, "", "", 0);
+
   List<Student> students = [
-    Student("Ahmet", "Demir", 85),
-    Student("Mehmet", "Yazıcı", 45),
-    Student("Alihan", "Ataş", 20),
+    Student.withId(1, "Ahmet Hüzeyfe", "Demir", 85),
+    Student.withId(2, "Mehmet", "Yazıcı", 45),
+    Student.withId(3, "Alihan", "Ataş", 20),
   ];
-//.setImageURL("https://picsum.photos/id/237/200/300")
-  Student s = new Student("Berke", "Yavaş", 78);
-  s.setImageURL("https://picsum.photos/id/237/200/300");
+
+  Student berke = Student.withId(4, "Berke", "Yavaş", 78);
+
   var ogrenciler = ["Ahmet", "Hüzeyfe", "Demir"];
-  
+
   @override
   Widget build(BuildContext context) {
+    if (!students.contains(berke)) {
+      students.add(berke);
+      berke.setImageURL("https://picsum.photos/id/237/200/300");
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(mesaj),
@@ -29,9 +42,9 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  void mesajGoster(BuildContext context, String mesaj) {
+  void mesajGoster(BuildContext context, String title, String mesaj) {
     var alert = AlertDialog(
-      title: Text("Sınav sonucu"),
+      title: Text(title),
       content: Text(mesaj),
     );
 
@@ -83,21 +96,106 @@ class MyApp extends StatelessWidget {
                   )*/
                   ,
                   onTap: () {
-                    print(students[index].firstName +
-                        " " +
-                        students[index].lastName);
+                    setState(() {
+                      selectedStudent = students[index];
+                    });
                   },
                 );
               }),
         ),
-        Center(
-          child: ElevatedButton(
-            child: Text("Sonucu gör"),
-            onPressed: () {
-              var mesaj = "waiting";
-              mesajGoster(context, mesaj);
-            },
-          ),
+        selectedStudent.firstName == "" && selectedStudent.firstName == ""
+            ? SizedBox.shrink()
+            : Text("Seçili öğrenci : " +
+                selectedStudent.firstName +
+                " " +
+                selectedStudent.lastName),
+        Row(
+          children: [
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 3,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.lightGreen,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.add),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Text(
+                        "Yeni Öğrenci",
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  var mesaj = "Yeni öğrenci " + selectedStudent.firstName + " " + selectedStudent.lastName +  " eklendi!";
+                  mesajGoster(context, "İşlem Tamamlandı", mesaj);
+                },
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 3,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amberAccent,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.update),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Text(
+                        "Güncelle",
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () {
+
+
+                  var mesaj = "Öğrenci " + selectedStudent.firstName + " " + selectedStudent.lastName + " güncellendi!";
+                  mesajGoster(context, "İşlem Tamamlandı", mesaj);
+                },
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 2,
+              child: ElevatedButton(
+                
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.redAccent,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.delete),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Text("Sil"),
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  var deletedStudent = selectedStudent.firstName + " " + selectedStudent.lastName;
+                  setState(() {
+                    students.remove(selectedStudent);
+                    selectedStudent = emptySelectedStudent();
+                  });
+                  var mesaj = "Öğrenci " + deletedStudent + " silindi!";
+                  mesajGoster(context, "İşlem Tamamlandı", mesaj);
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -111,5 +209,9 @@ class MyApp extends StatelessWidget {
     } else {
       return Icon(Icons.clear);
     }
+  }
+
+  Student emptySelectedStudent() {
+    return Student.withId(0, "", "", 0);
   }
 }

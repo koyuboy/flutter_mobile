@@ -1,19 +1,30 @@
 class Student {
+  int id;
   String firstName;
   String lastName;
   int grade;
   String _status;
   String _imageURL;
 
+  Student.withId(int id, String firstName, String lastName, int grade) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.grade = grade;
+  }
+
   Student(String firstName, String lastName, int grade) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.grade = grade;
-    this._imageURL = "https://picsum.photos/id/237/200/300";
   }
 
-  void set setImageURL(String url) {
+  void setImageURL(String url) {
     this._imageURL = url;
+  }
+
+  void set setGrade(int grade) {
+    this.grade = grade;
   }
 
   String get getImageURL{
@@ -31,4 +42,5 @@ class Student {
     }
     return message;
   }
+
 }
