@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/models/student.dart';
+import 'package:test_app/screens/student_add.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -132,8 +133,13 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => StudentAdd(students)));
+
+                  /*
                   var mesaj = "Yeni öğrenci " + selectedStudent.firstName + " " + selectedStudent.lastName +  " eklendi!";
                   mesajGoster(context, "İşlem Tamamlandı", mesaj);
+                  */
                 },
               ),
             ),
@@ -158,9 +164,14 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
-
-
-                  var mesaj = "Öğrenci " + selectedStudent.firstName + " " + selectedStudent.lastName + " güncellendi!";
+                  setState(() {
+                    
+                  });
+                  var mesaj = "Öğrenci " +
+                      selectedStudent.firstName +
+                      " " +
+                      selectedStudent.lastName +
+                      " güncellendi!";
                   mesajGoster(context, "İşlem Tamamlandı", mesaj);
                 },
               ),
@@ -169,7 +180,6 @@ class _MyAppState extends State<MyApp> {
               fit: FlexFit.tight,
               flex: 2,
               child: ElevatedButton(
-                
                 style: ElevatedButton.styleFrom(
                   primary: Colors.redAccent,
                 ),
@@ -185,7 +195,9 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
-                  var deletedStudent = selectedStudent.firstName + " " + selectedStudent.lastName;
+                  var deletedStudent = selectedStudent.firstName +
+                      " " +
+                      selectedStudent.lastName;
                   setState(() {
                     students.remove(selectedStudent);
                     selectedStudent = emptySelectedStudent();

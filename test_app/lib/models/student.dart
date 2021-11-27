@@ -19,6 +19,8 @@ class Student {
     this.grade = grade;
   }
 
+  Student.withoutInfo() {}
+
   void setImageURL(String url) {
     this._imageURL = url;
   }
@@ -27,7 +29,7 @@ class Student {
     this.grade = grade;
   }
 
-  String get getImageURL{
+  String get getImageURL {
     return this._imageURL;
   }
 
@@ -42,5 +44,4 @@ class Student {
     }
     return message;
   }
-
 }
